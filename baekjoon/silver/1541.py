@@ -27,8 +27,27 @@ if arr:
             sum += int(sub)
         result -= sum
         start = arr[j]
-    
-    result += int(inp[0:start])
+    plus_ix = []
+    for e in range(len(inp[:start])):
+        if inp[:start][e] == '+':
+            plus_ix.append(e)
+    chk = 0
+    if plus_ix:
+        for k in range(len(plus_ix)):
+            result += int(inp[:start][chk:plus_ix[k]])
+            chk = plus_ix[k]
+    else:
+        result += int(inp[0:start])
 else:
-    result = eval(inp)
+    plus_ix = []
+    for e in range(len(inp)):
+        if inp[e] == "+":
+            plus_ix.append(e)
+    if plus_ix:
+        start = 0
+        for m in plus_ix:
+            result += int(inp[start:m])
+            start = m
+    else:
+        result += int(inp)
 print(result)
