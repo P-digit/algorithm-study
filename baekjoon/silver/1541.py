@@ -1,53 +1,26 @@
-inp = input()
-inp += ' '
+inp = input().strip()
 arr = []
+
+result = 0
 
 for i in range(len(inp)):
     if inp[i] == '-':
-        arr.append(i)
-
-result = 0
-if arr:
-    start = -1
-    
-    for j in range(len(arr)-1, -1, -1):
-        plus_ix = []
-        sum = 0
-        sub = inp[arr[j]+1:start]
-        for e in range(len(sub)):
-            if sub[e] == '+':
-                plus_ix.append(e)
-        chk = 0
-        if plus_ix:
-            for k in range(len(plus_ix)):
-                sum += int(sub[chk:plus_ix[k]])
-                chk = plus_ix[k]
-            sum += int(sub[chk:])
-        else:
-            sum += int(sub)
-        result -= sum
-        start = arr[j]
-    plus_ix = []
-    for e in range(len(inp[:start])):
-        if inp[:start][e] == '+':
-            plus_ix.append(e)
-    chk = 0
-    if plus_ix:
-        for k in range(len(plus_ix)):
-            result += int(inp[:start][chk:plus_ix[k]])
-            chk = plus_ix[k]
-    else:
-        result += int(inp[0:start])
+        arr.append((i,"-"))
+    elif inp[i] == "+":
+        arr.append((i,"+"))
+if not arr:
+    result = int(inp)
 else:
-    plus_ix = []
-    for e in range(len(inp)):
-        if inp[e] == "+":
-            plus_ix.append(e)
-    if plus_ix:
-        start = 0
-        for m in plus_ix:
-            result += int(inp[start:m])
-            start = m
-    else:
-        result += int(inp)
-print(result)
+    result += int(inp[0:arr[0][0]])
+    ix = arr[0][0]
+    t = 1 if arr[0][1] == "+" else -1
+    for e in range(1, len(arr)):
+        if arr[e][1] == "-":
+            if t == 1:
+                t = -1
+        result += (int(inp[ix+1:arr[e][0]]) * t)
+        ix = arr[e][0]
+        
+    result += int(inp[ix+1:]) * t
+    print(result)
+    
